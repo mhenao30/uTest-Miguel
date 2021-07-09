@@ -1,5 +1,6 @@
 package co.com.utest.stepdefinitions;
 
+import co.com.utest.model.UtestData;
 import co.com.utest.tasks.*;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -8,6 +9,8 @@ import cucumber.api.java.en.When;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.actors.OnlineCast;
 
+import java.util.List;
+
 public class utestStepDefinitions {
     @Before
     public void setStage(){
@@ -15,8 +18,15 @@ public class utestStepDefinitions {
     }
 
     @Given("^miguel registered personal data$")
-    public void miguelRegisteredPersonalData() {
-        OnStage.theActorCalled("Miguel").attemptsTo(OpenUp.thePage(), (UserData.onThePage()));
+    public void miguelRegisteredPersonalData(List<UtestData> utestData) throws  Exception{
+        OnStage.theActorCalled("Miguel").attemptsTo(OpenUp.thePage(), UserData.onThePage(
+                utestData.get(0).getStrFirtName(),
+                utestData.get(0).getStrLastName(),
+                utestData.get(0).getStrEmail(),
+                utestData.get(0).getStrBirthMonth(),
+                utestData.get(0).getStrBirthDay(),
+                utestData.get(0).getStrBirthYear()
+        ));
     }
 
     @Then("^I register the Location$")
@@ -31,8 +41,11 @@ public class utestStepDefinitions {
     }
 
     @When("^I click to confirm$")
-    public void iClickToConfirm() {
-        OnStage.theActorInTheSpotlight().attemptsTo(Confirm.onThePage());
+    public void iClickToConfirm(List<UtestData> utestData) throws  Exception{
+        OnStage.theActorInTheSpotlight().attemptsTo(Confirm.onThePage(
+                utestData.get(0).getStrPassword(),
+                utestData.get(0).getStrConfirmPassword()
+        ));
     }
 
 }
